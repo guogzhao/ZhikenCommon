@@ -1,0 +1,35 @@
+<resources>
+
+    <!-- animation 样式 -->
+    <style name="ActivitySwitchAnimation" parent="@android:style/Animation">
+        <item name="android:activityOpenEnterAnimation">@anim/zhiken_slide_right_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/zhiken_slide_left_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/zhiken_slide_left_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/zhiken_slide_right_out</item>
+    </style>
+
+    <style name="PopupWindowAnimationFade">
+
+        <!-- PopupWindow左右弹出的效果 -->
+        <item name="android:windowEnterAnimation">@anim/pppw_in</item>
+        <item name="android:windowExitAnimation">@anim/pppw_out</item>
+    </style>
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <!-- <style name="AppBaseTheme" parent="android:Theme.Light"> -->
+    <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+    -->
+    <!-- </style> -->
+
+
+    <!-- Application theme. -->
+    <!-- <style name="AppTheme" parent="AppBaseTheme"> -->
+    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <!-- </style> -->
+
+</resources>

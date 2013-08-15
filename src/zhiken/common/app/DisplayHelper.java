@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 
-public class DPIHelper {
+public class DisplayHelper {
 	// /**
 	// * 级别模式四-字符集
 	// */
@@ -21,11 +22,29 @@ public class DPIHelper {
 	// * 程序使用的DPI
 	// */
 	// private int mUsedDensityDpi;
-	private float mDensity;
+	private DisplayMetrics mDisplayMetrics;
 
-	public DPIHelper(Activity activity) {
+	public DisplayHelper(Activity activity) {
 		mActivity = activity;
-		mDensity = mActivity.getResources().getDisplayMetrics().density;
+		mDisplayMetrics = mActivity.getResources().getDisplayMetrics();
+	}
+
+	/**
+	 * 屏幕分辨率 长
+	 * 
+	 * @return
+	 */
+	public int getWidthPixels() {
+		return mDisplayMetrics.widthPixels;
+	}
+
+	/**
+	 * 屏幕分辨率 高
+	 * 
+	 * @return
+	 */
+	public int getHeightPixels() {
+		return mDisplayMetrics.heightPixels;
 	}
 
 	// /**
@@ -73,11 +92,11 @@ public class DPIHelper {
 	}
 
 	public float hdpi2Pixel(float value) {
-		return value / 1.5f * mDensity;
+		return value / 1.5f * mDisplayMetrics.density;
 	}
 
 	public float xhdpi2Pixel(float value) {
-		return value / 2.0f * mDensity;
+		return value / 2.0f * mDisplayMetrics.density;
 	}
 	// Bitmap bmp = BitmapFactory.decodeResource(mActivity.Resources()get,
 	// R.drawable.icon);

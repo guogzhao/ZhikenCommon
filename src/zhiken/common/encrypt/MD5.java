@@ -21,7 +21,7 @@ public class MD5 {
 	 * 
 	 * @param text
 	 * @return
-	 */ 
+	 */
 	public static String get(String text) {
 		StringBuffer buf = new StringBuffer("");
 		try {
@@ -60,7 +60,7 @@ public class MD5 {
 	 * @param file
 	 * @return
 	 */
-	public static String getXmd5(File file) {
+	public static String get(File file) {
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
 		ByteArrayOutputStream bos = null;

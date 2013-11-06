@@ -47,6 +47,7 @@ public class DisplayHelper {
 		return mDisplayMetrics.heightPixels;
 	}
 
+	
 	// /**
 	// * 返回当前设备对应的DPI
 	// *

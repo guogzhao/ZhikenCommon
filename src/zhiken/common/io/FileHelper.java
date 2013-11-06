@@ -18,6 +18,17 @@ import android.provider.MediaStore.Files;
  * 
  */
 public class FileHelper {
+
+	public static String getFileExtName(String fileName) {
+		return fileName.substring(fileName.lastIndexOf(".")).toLowerCase();// תΪСд;
+	}
+
+	public static String getFileMD5Name(File file) throws IOException {
+		String fileMd5 = MD5.get(file);
+		String fileExt = FileHelper.getFileExtName(file.getName());
+		return fileMd5 + fileExt;
+	}
+
 	// public static String sSdCardRootDir;
 
 	// ��Uri uri =
@@ -124,11 +135,11 @@ public class FileHelper {
 	// return null;
 	// }
 
-	public static String getMD5FileName(String url) {
+	public static String getUrl2MD5FileName(String url) {
 		return MD5.get(url);
 	}
 
-	public static String getMD5FileName(String url, String ext) {
+	public static String getUrl2MD5FileName(String url, String ext) {
 		return MD5.get(url) + "." + ext;
 	}
 

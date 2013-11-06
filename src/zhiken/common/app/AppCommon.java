@@ -36,12 +36,4 @@ public class AppCommon {
 	public static View inflate(Context context, int resId) {
 		return LayoutInflater.from(context).inflate(resId, null);
 	}
-
-	public static boolean isEmail(String strEmail) {
-		String strPattern = "^[a-zA-Z][\\w\\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]$";
-
-		Pattern p = Pattern.compile(strPattern);
-		Matcher m = p.matcher(strEmail);
-		return m.matches();
-	}
 }

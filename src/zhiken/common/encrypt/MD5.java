@@ -1,103 +1,98 @@
 package zhiken.common.encrypt;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**
- * MD5加密类
- * 
- * @author George
- * 
- */
 public class MD5 {
-	/**
-	 * 32位的加密
-	 * 
-	 * @param text
-	 * @return
-	 */
-	public static String get(String text) {
-		StringBuffer buf = new StringBuffer("");
+
+	protected static char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+	protected static MessageDigest messagedigest = null;
+	static {
 		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			md.update(text.getBytes());
-			byte b[] = md.digest();
-			int i;
-
-			for (int offset = 0; offset < b.length; offset++) {
-				i = b[offset];
-				if (i < 0)
-					i += 256;
-				if (i < 16)
-					buf.append("0");
-				buf.append(Integer.toHexString(i));
-			}
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			messagedigest = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException nsaex) {
+			System.err.println(MD5.class.getName() + "初始化失败，MessageDigest不支持MD5");
+			nsaex.printStackTrace();
 		}
-		return buf.toString();
 	}
 
 	/**
-	 * 16位的加密
-	 * 
-	 * @param text
-	 * @return
-	 */
-	public static String get16(String text) {
-		return get(text).substring(8, 24);
-	}
-
-	/**
-	 * 32位的加密
+	 * 得到文件的MD5
 	 * 
 	 * @param file
 	 * @return
+	 * @throws IOException
 	 */
-	public static String get(File file) {
-		FileInputStream fis = null;
-		BufferedInputStream bis = null;
-		ByteArrayOutputStream bos = null;
-
-		int index;
-		try {
-
-			fis = new FileInputStream(file);
-			bis = new BufferedInputStream(fis);
-			bos = new ByteArrayOutputStream();
-
-			byte[] b = new byte[bis.available()];
-			while ((index = bis.read(b, 0, b.length)) != -1) {
-				bos.write(b, 0, index);
-			}
-		} catch (FileNotFoundException e) {
-			bos = null;
-			e.printStackTrace();
-		} catch (IOException e) {
-			bos = null;
-			e.printStackTrace();
-		} finally {
-			try {
-				bos.close();
-				bis.close();
-				fis.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		if (bos != null) {
-			byte[] bosb = bos.toByteArray();
-			for (int i = 0; i < 1024; i++) {
-				bosb[i] = 0;
-			}
-			return get(new String(bosb));
-		}
-		return null;
+	public static String get(File file) throws IOException {// getFileMD5String
+		FileInputStream in = new FileInputStream(file);
+		FileChannel ch = in.getChannel();
+		MappedByteBuffer byteBuffer = ch.map(FileChannel.MapMode.READ_ONLY, 0, file.length());
+		messagedigest.update(byteBuffer);
+		return bufferToHex(messagedigest.digest());
 	}
+
+	/**
+	 * 得到字符串的MD5
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public static String get(String s) {
+		return get(s.getBytes());
+	}
+
+	/**
+	 * 得到字节数组的MD5
+	 * 
+	 * @param bytes
+	 * @return
+	 */
+	public static String get(byte[] bytes) {
+		messagedigest.update(bytes);
+		return bufferToHex(messagedigest.digest());
+	}
+
+	private static String bufferToHex(byte bytes[]) {
+		return bufferToHex(bytes, 0, bytes.length);
+	}
+
+	private static String bufferToHex(byte bytes[], int m, int n) {
+		StringBuffer stringbuffer = new StringBuffer(2 * n);
+		int k = m + n;
+		for (int l = m; l < k; l++) {
+			appendHexPair(bytes[l], stringbuffer);
+		}
+		return stringbuffer.toString();
+	}
+
+	private static void appendHexPair(byte bt, StringBuffer stringbuffer) {
+		char c0 = hexDigits[(bt & 0xf0) >> 4];
+		char c1 = hexDigits[bt & 0xf];
+		stringbuffer.append(c0);
+		stringbuffer.append(c1);
+	}
+
+	public static boolean checkPassword(String password, String md5PwdStr) {
+		String s = get(password);
+		return s.equals(md5PwdStr);
+	}
+
+	// public static void main(String[] args) throws IOException {
+	// long begin = System.currentTimeMillis();
+	//
+	// // 2EA3E66AC37DF7610F5BD322EC4FFE48 670M 11s kuri双核1.66G 2G内存
+	// File big = new File("e:/新建文件夹.rar");
+	//
+	// String md5 = getFileMD5String(big);
+	//
+	// long end = System.currentTimeMillis();
+	// System.out.println("md5:" + md5 + "time:" + ((end - begin) / 1000) +
+	// "s");
+	// }
+
 }

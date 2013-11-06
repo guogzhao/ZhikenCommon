@@ -70,6 +70,10 @@ public class DateTime {
 		return DateTime.from(datetime, mFormat);
 	}
 
+	public static DateTime from(int year, int monthOfYear, int dayOfMonth) {
+		return DateTime.from(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth, "yyyy-MM-dd");
+	}
+
 	public long toTimeMillis() {
 		return mDate.getTime();
 	}

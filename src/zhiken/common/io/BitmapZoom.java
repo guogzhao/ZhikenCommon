@@ -9,30 +9,26 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.widget.ImageView;
 
 public class BitmapZoom {
 
 	// 缩放图片
-	public static Bitmap zoomImg(String img, int newWidth, int newHeight) {
+	public static Bitmap zoom(String imgpath, int newWidth, int newHeight) {
 		// 图片源
-		Bitmap bm = BitmapFactory.decodeFile(img);
+		Bitmap bm = BitmapFactory.decodeFile(imgpath);
 		if (null != bm) {
-			return zoomImg(bm, newWidth, newHeight);
+			return zoom(bm, newWidth, newHeight);
 		}
 		return null;
 	}
 
-	public static Bitmap zoomImg(Context context, String img, float newWidth,
-			float newHeight) {
+	public static Bitmap zoom(Context context, String imgpath, float newWidth, float newHeight) {
 		// 图片源
 		try {
-			Bitmap bm = BitmapFactory.decodeStream(context.getAssets()
-					.open(img));
+			Bitmap bm = BitmapFactory.decodeStream(context.getAssets().open(imgpath));
 			if (null != bm) {
-				return zoomImg(bm, newWidth, newHeight);
+				return zoom(bm, newWidth, newHeight);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -42,7 +38,7 @@ public class BitmapZoom {
 	}
 
 	// 缩放图片
-	public static Bitmap zoomImg(Bitmap bm, float newWidth, float newHeight) {
+	public static Bitmap zoom(Bitmap bm, float newWidth, float newHeight) {
 		// 获得图片的宽高
 		int width = bm.getWidth();
 		int height = bm.getHeight();
@@ -53,18 +49,56 @@ public class BitmapZoom {
 		Matrix matrix = new Matrix();
 		matrix.postScale(scaleWidth, scaleHeight);
 		// 得到新的图片
-		Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
-				true);
+		Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
 		return newbm;
 	}
+
+	// 缩放图片
+	public static Bitmap zoom(Bitmap bm, float newWidth) {
+		// 获得图片的宽高
+		int width = bm.getWidth();
+		int height = bm.getHeight();
+		// 计算缩放比例
+		float scaleWidth = newWidth / width;
+		float scaleHeight = scaleWidth;
+		// 取得想要缩放的matrix参数
+		Matrix matrix = new Matrix();
+		matrix.postScale(scaleWidth, scaleHeight);
+		// 得到新的图片
+		Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
+		return newbm;
+	}
+
+	// /**
+	// * 缩放图片
+	// *
+	// * @param bm
+	// * @param newWidth
+	// * @param newHeight
+	// * @return
+	// */
+	// public static Bitmap zoom(Bitmap bm, int newWidth, int newHeight) {
+	// // 获得图片的宽高
+	// int width = bm.getWidth();
+	// int height = bm.getHeight();
+	// // 计算缩放比例
+	// float scaleWidth = ((float) newWidth) / width;
+	// float scaleHeight = ((float) newHeight) / height;
+	// // 取得想要缩放的matrix参数
+	// Matrix matrix = new Matrix();
+	// matrix.postScale(scaleWidth, scaleHeight);
+	// // 得到新的图片
+	// Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
+	// true);
+	// return newbm;
+	// }
 
 	public static void setImageToViewByWidth(ImageView imageView, File imageFile) {
 
 		// imageView.setImageURI(Uri.fromFile(imageFile));
 		Bitmap oBitmap = null;
 		try {
-			oBitmap = BitmapFactory
-					.decodeStream(new FileInputStream(imageFile));
+			oBitmap = BitmapFactory.decodeStream(new FileInputStream(imageFile));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -93,30 +127,6 @@ public class BitmapZoom {
 	}
 
 	/**
-	 * 缩放图片
-	 * 
-	 * @param bm
-	 * @param newWidth
-	 * @param newHeight
-	 * @return
-	 */
-	public static Bitmap zoomImg(Bitmap bm, int newWidth, int newHeight) {
-		// 获得图片的宽高
-		int width = bm.getWidth();
-		int height = bm.getHeight();
-		// 计算缩放比例
-		float scaleWidth = ((float) newWidth) / width;
-		float scaleHeight = ((float) newHeight) / height;
-		// 取得想要缩放的matrix参数
-		Matrix matrix = new Matrix();
-		matrix.postScale(scaleWidth, scaleHeight);
-		// 得到新的图片
-		Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
-				true);
-		return newbm;
-	}
-
-	/**
 	 * 计算根据新宽度和最大高度得到新的高度
 	 * 
 	 * @param bm
@@ -124,8 +134,7 @@ public class BitmapZoom {
 	 * @param maxNewHeight
 	 * @return
 	 */
-	public static float getNewHeightByNewWidth(Bitmap bm, int newWidth,
-			int maxHeight) {
+	public static float getNewHeightByNewWidth(Bitmap bm, int newWidth, int maxHeight) {
 		// 获得图片的宽高
 		int width = bm.getWidth();
 		int height = bm.getHeight();

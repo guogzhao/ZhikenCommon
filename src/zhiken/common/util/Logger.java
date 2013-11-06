@@ -60,6 +60,7 @@ public class Logger {
 	public Logger(Class cls) {
 		mTag = cls.getName();
 	}
+
 	public Logger(String tag) {
 		mTag = tag;
 	}
